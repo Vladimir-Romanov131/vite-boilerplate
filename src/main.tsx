@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import App2 from "./App2.tsx";
+import App2 from "./mainMenu.tsx";
+import App3 from "./Recipe.tsx";
 import "./index.css";
 
 import WebApp from "@twa-dev/sdk";
@@ -13,8 +14,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 		<App />
 	</React.StrictMode>
 );
-ReactDOM.createRoot(document.getElementById("root2")!).render(
+ReactDOM.createRoot(document.getElementById("mainMenu")!).render(
 	<React.StrictMode>
 		<App2 />
+	</React.StrictMode>
+);
+ReactDOM.createRoot(document.getElementById("Recipe")!).render(
+	<React.StrictMode>
+		<App3 />
 	</React.StrictMode>
 );

@@ -1,16 +1,39 @@
 #root,
-#root2 {
+#mainMenu,
+#Recipe {
 	max-width: 1280px;
 	margin: 0 auto;
 	padding: 2rem;
 	text-align: center;
+	user-select: none;
+}
+.flex {
+	display: flex;
+}
+
+.card {
+	padding: 0.5em;
+}
+
+.read-the-docs {
+	color: #888;
+}
+
+.mainMenu,
+.Recipe {
+	display: none;
+}
+
+.hint {
+	color: var(--tg-theme-hint-color);
+	text-align: justify;
 }
 
 .logo {
-	height: 6em;
-	padding: 1.5em;
+	height: 12em;
+	padding: 0.5em;
 	will-change: filter;
-	transition: filter 300ms;
+	transition: filter 1s;
 }
 .logo:hover {
 	filter: drop-shadow(0 0 2em #646cffaa);
@@ -19,29 +42,8 @@
 	filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
-}
-
-@media (prefers-reduced-motion: no-preference) {
-	a:nth-of-type(2) .logo {
-		animation: logo-spin infinite 20s linear;
-	}
-}
-
-.card {
-	padding: 2em;
-}
-
-.read-the-docs {
-	color: #888;
-}
-
-.root2 {
-	display: none;
+.hint-content {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 1s ease-out;
 }

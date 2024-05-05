@@ -25,6 +25,10 @@ body {
 	min-height: 100vh;
 }
 
+li {
+	list-style: none;
+}
+
 button {
 	border-radius: 8px;
 	border: 1px solid transparent;
@@ -42,4 +46,14 @@ button:hover {
 }
 button:active {
 	background-color: #242bb3;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+details,
+details summary,
+details[open] {
+	all: unset;
 }

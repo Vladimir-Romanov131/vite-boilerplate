@@ -78,7 +78,7 @@ app.post("/recipes", (req, res) => {
 					.json({ message: "Рецепт успешно добавлен", recipeId: this.lastID });
 
 				// Отправка сообщения в административную беседу
-				const message = `Новый рецепт: ${recipeName}`;
+				const message = `Новый рецепт: ${recipeName}\nИнгредиенты:${ingredients}\nИнструкция:${instructions}\nТип:${type}`;
 				bot.sendMessage(adminChatId, message);
 			}
 		}
@@ -104,41 +104,4 @@ app.get("/recipes", (req, res) => {
 
 app.listen(port, () => {
 	console.log(`Сервер запущен на порту ${port}`);
-});
-
-// Обработчик для обработки нажатия кнопок "Принять" и "Отклонить"
-bot.on("callback_query", (callbackQuery) => {
-	const chatId = callbackQuery.message.chat.id;
-	const data = callbackQuery.data.split(":");
-
-	const action = data[0];
-	const recipeName = data[1];
-
-	if (action === "accept") {
-		const [recipeName, ingredients, instructions, photo, type] = data.slice(1);
-
-		const insertRecipeQuery = `
-            INSERT INTO recipes (recipeName, ingredients, instructions, photo, type)
-            VALUES (?, ?, ?, ?, ?);
-        `;
-
-		db.run(
-			insertRecipeQuery,
-			[recipeName, ingredients, instructions, photo, type],
-			function (err) {
-				if (err) {
-					console.error("Ошибка при добавлении рецепта:", err.message);
-					bot.sendMessage(chatId, "Ошибка при добавлении рецепта");
-				} else {
-					console.log("Рецепт успешно добавлен. ID:", this.lastID);
-					bot.sendMessage(chatId, "Рецепт успешно добавлен в базу данных");
-				}
-			}
-		);
-	} else if (action === "reject") {
-		bot.sendMessage(
-			chatId,
-			`Запрос на добавление рецепта "${recipeName}" отклонен`
-		);
-	}
 });

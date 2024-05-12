@@ -1,29 +1,39 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 import WebApp from "@twa-dev/sdk";
 
+// Создаем интерфейс для описания свойств рецепта
+interface Recipe {
+	recipeName: string;
+	photo: string;
+	instructions: string;
+	ingredients: string;
+}
+
 function App() {
+	const [recipes, setRecipes] = useState<Recipe[]>([]);
+
 	useEffect(() => {
-		WebApp.MainButton.show();
-		const detailsElements = document.querySelectorAll("details");
-		detailsElements.forEach((detailsElement) => {
-			detailsElement.addEventListener("click", () => {
-				const content = detailsElement.querySelector(".hint-content");
-				if (content && content instanceof HTMLElement) {
-					if (detailsElement.hasAttribute("open")) {
-						content.style.maxHeight = "0";
-						// Обновляем maxHeight после завершения анимации
-						setTimeout(() => {
-							content.style.maxHeight = "";
-						}, 200); // Задержка должна соответствовать продолжительности вашей CSS-транзиции
-					} else {
-						content.style.maxHeight = `${content.scrollHeight}px`;
-					}
+		WebApp.MainButton.hide();
+		const fetchRecipes = async () => {
+			try {
+				const response = await fetch("http://localhost:3000/recipes");
+				if (response.ok) {
+					const data = await response.json();
+					console.log(data);
+					setRecipes(data);
+				} else {
+					console.error("Ошибка при получении рецептов:", response.statusText);
 				}
-			});
-		});
+			} catch (error) {
+				console.error("Произошла ошибка при отправке запроса:", error);
+			}
+		};
+
+		fetchRecipes();
 	}, []);
+
 	const handleClick = () => {
 		const root = document.getElementById("mainMenu");
 		const root2 = document.getElementById("Recipe");
@@ -42,134 +52,37 @@ function App() {
 
 	return (
 		<>
+			<header>
+				<ul>
+					<li>1</li>
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+					<li>5</li>
+				</ul>
+			</header>
 			<main>
 				<ul className="card">
-					<li>
-						<details id="details">
-							<summary>
-								<h2>Lorem ipsum</h2>
-								<img
-									draggable="false"
-									className="logo"
-									src="src\assets\tapps.png"
-									alt=""
-								/>
-							</summary>
-							<div className="hint-content">
-								<p className="hint">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui,
-									tenetur! Suscipit eos maiores temporibus, quae assumenda omnis
-									sit numquam nam neque, quisquam eveniet corporis saepe
-									pariatur optio et, quod facilis.
-								</p>
-							</div>
-						</details>
-					</li>
-					<li>
-						<details id="details">
-							<summary>
-								<h2>Lorem ipsum</h2>
-								<img
-									draggable="false"
-									className="logo"
-									src="src\assets\tapps.png"
-									alt=""
-								/>
-							</summary>
-							<div className="hint-content">
-								<p className="hint">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui,
-									tenetur! Suscipit eos maiores temporibus, quae assumenda omnis
-									sit numquam nam neque, quisquam eveniet corporis saepe
-									pariatur optio et, quod facilis.
-								</p>
-							</div>
-						</details>
-					</li>
-					<li>
-						<details id="details">
-							<summary>
-								<h2>Lorem ipsum</h2>
-								<img
-									draggable="false"
-									className="logo"
-									src="src\assets\tapps.png"
-									alt=""
-								/>
-							</summary>
-							<div className="hint-content">
-								<p className="hint">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui,
-									tenetur! Suscipit eos maiores temporibus, quae assumenda omnis
-									sit numquam nam neque, quisquam eveniet corporis saepe
-									pariatur optio et, quod facilis.
-								</p>
-							</div>
-						</details>
-					</li>
-					<li>
-						<details id="details">
-							<summary>
-								<h2>Lorem ipsum</h2>
-								<img
-									draggable="false"
-									className="logo"
-									src="src\assets\tapps.png"
-									alt=""
-								/>
-							</summary>
-							<div className="hint-content">
-								<p className="hint">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui,
-									tenetur! Suscipit eos maiores temporibus, quae assumenda omnis
-									sit numquam nam neque, quisquam eveniet corporis saepe
-									pariatur optio et, quod facilis.
-								</p>
-							</div>
-						</details>
-					</li>
-					<li>
-						<details id="details">
-							<summary>
-								<h2>Lorem ipsum</h2>
-								<img
-									draggable="false"
-									className="logo"
-									src="src\assets\tapps.png"
-									alt=""
-								/>
-							</summary>
-							<div className="hint-content">
-								<p className="hint">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui,
-									tenetur! Suscipit eos maiores temporibus, quae assumenda omnis
-									sit numquam nam neque, quisquam eveniet corporis saepe
-									pariatur optio et, quod facilis.
-								</p>
-							</div>
-						</details>
-					</li>
-					<li>
-						<details id="details">
-							<summary>
-								<h2>Lorem ipsum</h2>
-								<img
-									draggable="false"
-									className="logo"
-									src="src\assets\tapps.png"
-									alt=""
-								/>
-							</summary>
-							<div className="hint-content">
-								<p className="hint">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui,
-									tenetur! Suscipit eos maiores temporibus, quae assumenda omnis
-									sit numquam nam neque, quisquam eveniet corporis saepe
-									pariatur optio et, quod facilis.
-								</p>
-							</div>
-						</details>
-					</li>
+					{/* Маппим список рецептов и отображаем их */}
+					{recipes.map((recipe, index) => (
+						<li key={index}>
+							<details id={`details-${index}`}>
+								<summary>
+									<h2>{recipe.recipeName}</h2>
+									<img
+										draggable="false"
+										className="logo"
+										src={recipe.photo}
+										alt=""
+									/>
+								</summary>
+								<div className="hint-content">
+									<p className="hint">Инструкция: {recipe.instructions}</p>
+									<p className="hint">Ингридиенты: {recipe.ingredients}</p>
+								</div>
+							</details>
+						</li>
+					))}
 				</ul>
 			</main>
 			<div className="card">

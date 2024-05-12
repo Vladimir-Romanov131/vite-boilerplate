@@ -41,9 +41,3 @@
 .logo.react:hover {
 	filter: drop-shadow(0 0 2em #61dafbaa);
 }
-
-.hint-content {
-	max-height: 0;
-	overflow: hidden;
-	transition: max-height 1s ease-out;
-}

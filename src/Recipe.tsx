@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import "./App.css";
-
 import WebApp from "@twa-dev/sdk";
+import AddRecipeForm from "./AddRecipeForm";
 
 function App() {
 	useEffect(() => {
 		WebApp.BackButton.onClick(handleClick);
 	}, []);
+
 	const handleClick = () => {
 		const root = document.getElementById("Recipe");
 		const root2 = document.getElementById("mainMenu");
@@ -21,10 +22,7 @@ function App() {
 	return (
 		<>
 			<header className="header header-main">ff</header>
-
-			{/* <div className="card">
-				<button onClick={handleClick}> Сюда</button>
-			</div> */}
+			<AddRecipeForm />
 		</>
 	);
 }
